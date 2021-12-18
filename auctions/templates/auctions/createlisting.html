@@ -1,0 +1,76 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+
+
+<div class="container">
+    <div>
+        <form method="POST" action="{% url 'createlisting' %}">
+            {% csrf_token %}
+
+            <div class="">
+                <label for="title" class="col-sm-1 col-form-label">Title</label>
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Title" class="form-control" required>
+                </div>
+            </div>
+
+
+            <div class="">
+                <label for="category" class="col-sm-1 col-form-label">Category</label>
+                <div class="form-group">
+                    <select class="form-control" name="category" required>
+                        <option disabled selected value> -- select an option -- </option>
+                        
+                            <option>Home</option>
+                            <option>Video-Games</option>
+                            <option>Computer</option>
+                            <option>Mobile</option>
+
+                        
+    
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="">
+                <label for="startbid" class="col-sm-1 col-form-label">Strat Bid</label>            
+                <div class="form-group">
+                    <input style="width: 100%;" type="number" name="startbid" placeholder="Start Bid" class="form-control" min="1" required >
+                </div>
+            </div>
+
+
+            <div class="">
+                <label for="imageurl" class="col-sm-1 col-form-label">ImageURL</label>  
+                <div class="form-group">
+                    <input type="url" name="imageurl"  class ="form-control" placeholder="Image URL" required>
+                </div>
+            </div>
+
+
+            <div class="">
+                <label for="description" class="col-sm-1 col-form-label">Description</label>  
+                <div class="form-group">
+                    <textarea placeholder="Description" name="description" style="width: 100%; height: 100px;" class ="form-control" required></textarea>
+                </div>
+            </div>
+
+
+            <div class="form-group row">  
+                <div class="form-group">
+                    <input type="submit" value="Active" class="btn btn-primary">
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>    
+
+
+    
+{% endblock %}

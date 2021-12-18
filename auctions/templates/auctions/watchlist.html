@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+    {% if watchtitle %}
+    <div class="row" style="padding: 20px;">
+
+        
+        {% for list in watchtitle %}
+            <div class="col-lg-4" style="padding-bottom:10px ;">
+                <img class="thumbnail" src="{{list.watchpage.imageURL}}" style="width:300px ;height: 200px;" />
+                <div class="box-element product" style="width: 300px;">
+                    <h6><strong>{{list.watchpage.title}}</strong></h6>
+                    
+                    <hr />
+                    <h7><strong>Category - {{list.watchpage.category}}</strong></h7>
+                    
+                    <form action="{% url 'listview' list.watchpage.title %}">
+                        <button class="btn btn-outline-secondary add-btn update-cart" style="display: inline-block; float: right;">
+                        View</button>
+                    </form>
+                    <form action="{% url 'removewatch' list.pk %}" method="POST" >
+                        {% csrf_token %}
+                        <button class="btn btn-outline-secondary add-btn update-cart" style="display: inline-block; float: right;">
+                            Remove</button>
+                    </form>
+                    <br>
+
+                    {% if list.watchpage.current_bid %}
+                        <h7><strong>Current Bid - ${{list.watchpage.current_bid}}</strong></h7>
+                    {% else %}
+                        <h7><strong>Start Bid - ${{list.watchpage.startbid}}</strong></h7>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <h1><p>No Items in Watch List.......</p></h1>
+        <a href="{% url 'index' %}"><h4>Go to Active Listing Page. </h4></a>
+    {% endif %}
+</div>
+
+
+{% endblock %}

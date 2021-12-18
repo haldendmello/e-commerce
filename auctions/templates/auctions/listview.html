@@ -1,0 +1,124 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+    
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm">
+           <img id="listimg" class="thumbnail" src="{{listtitle.imageURL}}" >
+        </div>
+
+        <div class="col-sm">
+            <h1><label>Title : {{listtitle.title}}</label></h1>
+            <h3><label>category : {{listtitle.category}}</label></h3>
+            <h3><lable>Start Price - ${{listtitle.startbid}}</lable></h3>
+       
+            <h3><label>Current Price - ${{currentbid.bid}}</label></h3>
+          
+            {% if user.is_authenticated %}
+                {% if listtitle.status == 'close' %}
+
+                    <span class="badge badge-success" style="padding: 10px;">{{currentbid.user}}  Won</span>
+                    
+
+                {% else %}
+                    <form action="{% url 'current_bid' listtitle.pk %}" method="POST" >
+                        {% csrf_token %}
+                            {% if listtitle.startbid > currentbid.bid %}
+                                <div class="form-group row" style="width: 200px;">
+                                    <input type="number" name="bid" min="{{listtitle.startbid|add:'1'}}" class="form-control" placeholder="${{listtitle.startbid|add:'1'}}" required ><br>
+                                </div>
+                            {% else %}
+                                <div class="form-group row" style="width: 200px;">
+                                    <input type="number" name="bid" min="{{currentbid.bid|add:'1'}}" class="form-control" placeholder="${{currentbid.bid|add:'1'}}" required ><br>
+                                </div>
+                            {% endif %}
+                        <div class="form-group row">
+                            <input type="submit" value="Bid" class="btn btn-primary"><br>
+                        </div>
+                    </form>
+
+                    <div class="form-group row">
+                        <form action="{% url 'addwatchlist' listtitle.title %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Add To WatchList" class="btn btn-primary">
+                        </form>
+
+                        {% if request.user == listtitle.user %}
+                            <div style="padding-left: 20px;" class="owner">
+                                <form action="{% url 'closebid' listtitle.pk %}" >
+                                    <input type="submit"  value="Close Bid" class="btn btn-primary">
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                
+                   
+                    
+                {% endif %}
+
+            {% else %}
+                <div class="form-group row" style="width: 200px;">
+                    <input type="number" min="1" class="form-control" disabled placeholder="$0.00" ><br>
+                </div>
+
+                <div class="form-group row">
+                    <input type="button" value="Bid" name="bid" disabled class="btn btn-primary"><br>
+                </div>
+
+                <div class="form-group row">
+                        <input type="submit" disabled value="Add To WatchList" class="btn btn-primary">
+                </div>
+
+            {% endif %}
+            
+        </div>
+    </div>
+        
+    <div>
+        <p> Description : {{listtitle.description}}</p>
+        <p>Date : {{listtitle.date}}</p>
+    </div>
+    <br>
+    {% if user.is_authenticated %}
+        <div class="comments">
+            <form  method="POST" action="{% url 'comments' listtitle.title %}" >
+            {% csrf_token %}
+                <div class="d-flex">
+                
+                    <input type="text " name="comment" class="form-control mr-1" id="myMessage"autocomplete="off" autofocus="on" required="True">
+                    <input type="submit" class="btn btn-primary" id="sendmessage" value="Comment">
+                </div>
+            </form>
+            
+            <textarea readonly class="form-control" style="height: 200px; outline: none; " >
+                {% for comment in comment reversed %}
+                      {{comment.user}} - {{comment.comment}}  
+                {% endfor %}
+            </textarea>
+        </div>
+    {% else %}
+    
+        <div class="comments">
+            <div class="d-flex">
+                
+                    <input type="text" name="comment" class="form-control mr-1" id="myMessage"autocomplete="off" autofocus="on" disabled>
+                    <input type="submit" class="btn btn-primary" id="sendmessage" value="Comment" disabled >
+                
+            </div>
+            <textarea readonly class="form-control" style="height: 200px; outline: none; " disabled>
+                {% for comment in comment reversed %}
+                      {{comment.user}} - {{comment.comment}}  
+                {% endfor %}
+            </textarea>
+        </div>
+
+    {% endif %}
+
+    
+</div>
+
+    
+{% endblock %}
