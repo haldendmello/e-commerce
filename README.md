@@ -4,16 +4,16 @@
 
 ### Home Page
 
-![Home Page](/home.png)
+![Home Page](images/home.png)
 
 ### Create Listing
 
-![Create listing](/createlisting.gif)
+![Create listing](images/createlisting.gif)
 
 ### Add watchlist
 
-![Add watchlist](/addwatchlist.gif)
+![Add watchlist](images/addwatchlist.gif)
 
 ### Categories
 
-![Categories](/categories.gif)
+![Categories](images/categories.gif)
